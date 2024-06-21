@@ -12,6 +12,8 @@ export default function Inicio() {
         navigation.navigate('AdicionarGasto');
       }
 
+      
+
     const [total, setTotal] = useState(721);
 
     const data = [
@@ -95,20 +97,20 @@ export default function Inicio() {
   const styles = StyleSheet.create({
     container: {
       flex: 1,
-      backgroundColor: '#1E1E1E',
+      backgroundColor: '#121212',
     },
     gastos: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
     padding: 16,
-    marginTop:30,
+    marginTop:17,
     
     },
     title: {
     fontFamily:'Montserrat',
     fontWeight: '800',
-    fontSize: 32,
+    fontSize: 24,
     fontWeight: 'bold',
     color: '#fff',
     },
@@ -172,13 +174,15 @@ export default function Inicio() {
       
       },
       totalButtonText: {
-        fontSize: 16,
+        fontSize: 18,
         fontWeight: 'bold',
         color: '#fff',
         textAlign: 'center',
         color: '#00B14D',
-        marginBottom:10,
-        fontWeight: '800',
+        marginBottom:18,
+        fontWeight: '700',
+
+
       },
       addButton: {
         paddingHorizontal:12,

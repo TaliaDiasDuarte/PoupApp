@@ -16,7 +16,7 @@ export default function App() {
 
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName="Inicio"screenOptions={{headerShown: false }}>
+        initialRouteName="AdicionarGasto"screenOptions={{headerShown: false }}>
         <Stack.Screen name="Entrar" component={Entrar}/>  
         <Stack.Screen name="Cadastrar" component={Cadastrar}/> 
         <Stack.Screen name="Login" component={Login}/> 
