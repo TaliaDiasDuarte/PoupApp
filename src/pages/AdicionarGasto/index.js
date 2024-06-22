@@ -5,23 +5,24 @@ import { useFonts } from 'expo-font';
 import { useNavigation } from '@react-navigation/native';
 import { MaterialIcons } from '@expo/vector-icons'
 import MaskInput, { Masks } from 'react-native-mask-input';
+import apiMockApi from '../../services/MockApi';
+
 
 
 export default function AdicionarGasto() {
-  const [title, setTitle] = useState('');
-  const [description, setDescription] = useState('');
-  const [amount, setAmount] = useState('');
-  const [paymentMethod, setPaymentMethod] = useState('PIX');
+  const [titulo, setTitulo] = useState('');
+  const [descricao, setDescricao] = useState('');
+  const [valor, setValor] = useState('');
+  const [pagamentoMetodo, setPagamentoMetodo] = useState('PIX');
   const [installments, setInstallments] = useState(false);
-  const [image, setImage] = useState(null);
+  // const [image, setImage] = useState(null);
 
   let [] = useFonts({ 'Montserrat': require('./../../../assets/fonts/Montserrat-VariableFont_wght.ttf') });
 
-  const [selectedOption, setSelectedOption] = useState('PIX');
-
+  const [selecioneOpcao, setSelecioneOpcao] = useState('');
 
   const handleOptionPress = (option) => {
-    setSelectedOption(option);
+    setSelecioneOpcao(option);
   };
 
 
@@ -30,36 +31,51 @@ export default function AdicionarGasto() {
     navigation.navigate('Inicio');
   }
 
-  const handlePaymentChange = (method) => {
-    setPaymentMethod(method);
-  };
+  // const handlePaymentChange = (method) => {
+  //   setPagamentoMetodo(method);
+  // };
 
-  const handleInstallmentsChange = () => {
-    setInstallments(!installments);
-  };
+  // const handleInstallmentsChange = () => {
+  //   setInstallments(!installments);
+  // };
 
-  const handleImageUpload = (image) => {
-    setImage(image);
-  };
+  // const handleImageUpload = (image) => {
+  //   setImage(image);
+  // };
 
   const handleSubmit = () => {
-    //    Processar dados do gasto
-    //   console.log('Dados do gasto:', {
-    //     title,
-    //     description,
-    //     amount,
-    //     paymentMethod,
-    //     installments,
-    //     image,
-    //   });
+      // Processar dados do gasto
+      console.log('Dados do gasto:', {
+        titulo,
+        descricao,
+        valor,
+        selecioneOpcao,
+        // installments,
+        // image,
+      });
+      const dados = {
+        "titulo": titulo,
+        "descricao": descricao,
+        "valor": valor,
+        "pagamentoMetodo": selecioneOpcao,
+      };
+      
 
-    //    Limpar campos após o envio
-    //   setTitle('');
-    //   setDescription('');
-    //   setAmount('');
-    //   setPaymentMethod('PIX');
-    //   setInstallments(false);
-    //   setImage(null);
+      apiMockApi
+      .post("GASTOS", dados)
+      .then((response) => {
+        if (response.status === 201) {
+          alert("Registro inserido com sucesso!");
+          setTitulo('');
+          setDescricao('');
+          setValor('');
+          setSelecioneOpcao('');
+        } else {
+          alert("Erro ao cadastrar usuário!");
+        }
+      })
+
+
   };
 
 
@@ -79,7 +95,7 @@ export default function AdicionarGasto() {
           ></MaterialIcons>
         </TouchableOpacity>
 
-        <Text style={styles.title}>GASTOS</Text>
+        <Text style={styles.titulo}>GASTOS</Text>
 
       </View>
 
@@ -87,25 +103,28 @@ export default function AdicionarGasto() {
       <TextInput
         style={styles.input}
         placeholder="Título"
-        value={title}
-        onChangeText={setTitle}
+        value={titulo}
+        onChangeText={setTitulo}
       />
       <TextInput
         style={styles.input}
         placeholder="Descrição"
-        value={description}
-        onChangeText={setDescription}
+        value={descricao}
+        onChangeText={setDescricao}
       />
+
+
+
       <View style={{ flexDirection: 'row', height: 150 ,}}>
         <View style={{ flexDirection: 'column', width: 179, }}>
 
           <View style={{ flexDirection: 'row', }}>
 
-            <View style={styles.amountContainer}>
+            <View style={styles.valorContainer}>
                <MaskInput
-               style={styles.amountInput}
-               value={amount}
-               onChangeText={setAmount}
+               style={styles.valorInput}
+               value={valor}
+               onChangeText={setValor}
                mask={Masks.BRL_CURRENCY}
                keyboardType="numeric"
              />
@@ -118,14 +137,14 @@ export default function AdicionarGasto() {
 
         </View>
 
-        <View style={styles.paymentMethodContainer}>
-          <View style={styles.paymentMethodOption}>
+        <View style={styles.pagamentoMetodoContainer}>
+          <View style={styles.pagamentoMetodoOption}>
 
             <TouchableOpacity
               style={styles.option}
               onPress={() => handleOptionPress('PIX')}
             >
-              <View style={[styles.circle, selectedOption === 'PIX' && styles.selected2]} />
+              <View style={[styles.circle, selecioneOpcao === 'PIX' && styles.selected2]} />
 
               <Text style={styles.optionText}>PIX</Text>
             </TouchableOpacity>
@@ -134,14 +153,14 @@ export default function AdicionarGasto() {
               style={styles.option}
               onPress={() => handleOptionPress('CARTÃO DE CRÉDITO')}
             >
-              <View style={[styles.circle, selectedOption === 'CARTÃO DE CRÉDITO' && styles.selected2]} />
+              <View style={[styles.circle, selecioneOpcao === 'CARTÃO DE CRÉDITO' && styles.selected2]} />
               <Text style={styles.optionText}>CARTÃO DE CRÉDITO</Text>
             </TouchableOpacity>
             <TouchableOpacity
               style={[styles.option,]}
               onPress={() => handleOptionPress('DINHEIRO')}
             >
-              <View style={[styles.circle, selectedOption === 'DINHEIRO' && styles.selected2]} />
+              <View style={[styles.circle, selecioneOpcao === 'DINHEIRO' && styles.selected2]} />
               <Text style={styles.optionText}>DINHEIRO</Text>
             </TouchableOpacity>
 
@@ -192,7 +211,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#121212',
     padding: 20,
   },
-  title: {
+  titulo: {
     fontSize: 24,
     fontWeight: 'bold',
     color: '#fff',
@@ -210,7 +229,7 @@ const styles = StyleSheet.create({
     color: '#fff',
     backgroundColor: "black",
   },
-  amountContainer: {
+  valorContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     marginBottom: 10,
@@ -218,7 +237,7 @@ const styles = StyleSheet.create({
     width:180,
 
   },
-  amountSymbol: {
+  valorSymbol: {
     height: 120,
     paddingTop: 50,
     backgroundColor: "black",
@@ -228,7 +247,7 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 7,
     borderRadius:10,
   },
-  amountInput: {
+  valorInput: {
    borderTopRightRadius:10,
    borderTopLeftRadius:10,
     height: 120,
@@ -243,19 +262,19 @@ const styles = StyleSheet.create({
 
   },
   //caixa aonde ficam os metodos de pagto
-  paymentMethodContainer: {
+  pagamentoMetodoContainer: {
     marginBottom: 10,
     width:186,
     height:150,
     marginLeft:5,
     
   },
-  paymentMethodOption: {
+  pagamentoMetodoOption: {
     flex: 1,
     borderRadius:10,
     backgroundColor: "black",
   },
-  paymentMethodButton: {
+  pagamentoMetodoButton: {
     backgroundColor: '#2196F3',
     padding: 10,
     borderRadius: 7,
@@ -336,7 +355,7 @@ const styles = StyleSheet.create({
     width: 20,
     height: 20,
     borderRadius: 10,
-    // backgroundColor:(selectedOption = 'PIX' ? '#00f540' : '#fff'}),
+    // backgroundColor:(selecioneOpcao = 'PIX' ? '#00f540' : '#fff'}),
     borderWidth: 2,
     borderColor: '#fff',
     marginRight: 10,
