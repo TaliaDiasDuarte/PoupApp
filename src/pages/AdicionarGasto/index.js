@@ -6,7 +6,7 @@ import { useNavigation } from '@react-navigation/native';
 import { MaterialIcons } from '@expo/vector-icons'
 import MaskInput, { Masks } from 'react-native-mask-input';
 import apiMockApi from '../../services/MockApi';
-
+import  styles from './style';
 
 
 export default function AdicionarGasto() {
@@ -26,18 +26,16 @@ export default function AdicionarGasto() {
   };
 
 
-
-  
-
   const navigation = useNavigation();
   function AcessarInicio() {
     navigation.navigate('Inicio');
   }
 
-  const [rawValor, setRawValor] = useState(''); // Masked value for display in the input
+  //o bloco abaixo enviar o valor para api sem o cifrao de dh
+  const [rawValor, setRawValor] = useState(''); // valor do input com mascara
 
   const onChangeText = (maskedValue, unmaskedValue) => {
-    setRawValor(maskedValue); // Update masked value for display
+    setRawValor(maskedValue); // atualizada valor display
 
     // Extract numeric value without mask and comma
     const numericValue = (maskedValue.replace(/R\$|\$/g, "")); // Remove non-numeric characters, including R$ and period
@@ -47,33 +45,7 @@ export default function AdicionarGasto() {
 
 
 
-
-
-
-
-
-
-  // const [rawValor, setRawValor] = useState('');
-
-  // const onChangeText = (maskedValue, unmaskedValue) => {
-  //   setValor (floatValor); // Update formatted value with mask
-  //   setRawValor (maskedValue); 
-  //   Update raw value without mask
-  //    const floatValor = (maskedValue.replace(/R\$|\$/g, ""));
-  //    console.log('Extracted float value:', floatValor);
-  // };
-
-
-
-
-  // const handleInstallmentsChange = () => {
-  //   setInstallments(!installments);
-  // };
-
-  // const handleImageUpload = (image) => {
-  //   setImage(image);
-  // };
-
+  //envia valores para api
   const handleSubmit = () => {
     // Processar dados do gasto
     console.log('Dados do gasto:', {
@@ -116,7 +88,7 @@ export default function AdicionarGasto() {
 
 
     <View style={styles.container}>
-
+{/* container gastos */}
       <View style={{ flexDirection: 'row', }}>
         <TouchableOpacity onPress={AcessarInicio} >
           <MaterialIcons
@@ -127,16 +99,11 @@ export default function AdicionarGasto() {
           ></MaterialIcons>
         </TouchableOpacity>
 
-
-
-
-
-
         <Text style={styles.titulo}>GASTOS</Text>
 
       </View>
 
-
+{/* input titulo */}
       <TextInput
         style={styles.input}
         placeholder="Título"
@@ -145,12 +112,8 @@ export default function AdicionarGasto() {
         onChangeText={setTitulo}
       />
 
-      {/* <TextInput
-          style={estilos.input}
-          placeholder='Nome'
-          placeholderTextColor={"#d3d3d3"}
-          value={nome}
-          onChangeText={(text) => setNome(text)} /> */}
+
+  {/*input descricao */}
       <TextInput
         style={styles.input}
         placeholder="Descrição"
@@ -162,6 +125,8 @@ export default function AdicionarGasto() {
 
       {/* caixa que contem a opçao de pix e valor gasto */}
       <View style={{ flexDirection: 'row', height: 150, width: "100%", gap: 5 }}>
+
+        {/* container que conten digitar valor  */}
         <View style={{ flexDirection: 'column', width: "49%", }}>
 
           <View style={{ flexDirection: 'row', }}>
@@ -184,6 +149,8 @@ export default function AdicionarGasto() {
 
         </View>
 
+
+{/* opcoes de pagto container */}
         <View style={styles.pagamentoMetodoContainer}>
           <View style={styles.pagamentoMetodoOption}>
 
@@ -255,181 +222,3 @@ export default function AdicionarGasto() {
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#121212',
-    padding: 20,
-  },
-  titulo: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: '#fff',
-    marginBottom: 20,
-    marginTop: 20,
-    fontFamily: 'Montserrat',
-  },
-  input: {
-    height: 50,
-    borderColor: 'black',
-    borderWidth: 1,
-    borderRadius: 5,
-    padding: 10,
-    marginBottom: 10,
-    color: '#fff',
-    backgroundColor: "black",
-  },
-  valorContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 10,
-    borderRadius: 10,
-    width: "100%",
-
-  },
-  valorSymbol: {
-    height: 120,
-    paddingTop: 50,
-    backgroundColor: "black",
-    fontSize: 28,
-    color: '#00B14D',
-    textAlign: "center",
-    borderTopLeftRadius: 7,
-    borderRadius: 10,
-  },
-  valorInput: {
-    borderTopRightRadius: 10,
-    borderTopLeftRadius: 10,
-    height: 120,
-    width: 179,
-    backgroundColor: "black",
-    borderColor: 'black',
-    borderWidth: 1,
-    padding: 10,
-    flex: 1,
-    color: '#00B14D',
-    fontSize: 34,
-
-  },
-  //caixa aonde ficam os metodos de pagto
-  pagamentoMetodoContainer: {
-    marginBottom: 10,
-    width: "49%",
-    height: 150,
-    marginLeft: 5,
-
-  },
-  pagamentoMetodoOption: {
-    flex: 1,
-    borderRadius: 10,
-    backgroundColor: "black",
-  },
-  pagamentoMetodoButton: {
-    backgroundColor: '#2196F3',
-    padding: 10,
-    borderRadius: 7,
-    alignItems: 'center',
-  },
-  selected: {
-    backgroundColor: '#4CAF50',
-  },
-  paymentIcon: {
-    alignItems: 'center',
-  },
-  paymentIconText: {
-    color: '#fff',
-    fontSize: 12,
-  },
-  installmentsContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 10,
-    marginTop: 20,
-    width: '100%'
-  },
-  installmentsLabel: {
-    marginLeft: 10,
-    color: '#fff',
-  },
-  uploadButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    alignContent: 'center',
-    backgroundColor: 'black',
-    padding: 10,
-    borderRadius: 5,
-    marginBottom: 10,
-    paddingLeft: 98,
-    width: "100%",
-  },
-  uploadButtonText: {
-    color: '#fff',
-    fontSize: 16,
-    marginRight: 10,
-    textAlign: "center",
-
-  },
-
-  submitButton: {
-    marginTop: 250,
-    justifyContent: 'flex-end',
-    backgroundColor: '#4CAF50',
-    padding: 10,
-    borderRadius: 5,
-    paddingTop: 11,
-    alignItems: 'center',
-
-
-  },
-  buttonText2: {
-    color: 'black',
-    paddingTop: 5,
-    textAlign: 'center',
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
-  option: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingVertical: 15,
-    paddingHorizontal: 5,
-    marginLeft: 10,
-    marginRight: 10,
-    borderRadius: 5,
-
-  },
-  selected2: {
-    borderColor: '#4CAF50',
-    backgroundColor: '#4CAF50',
-  },
-  circle: {
-    width: 20,
-    height: 20,
-    borderRadius: 10,
-    // backgroundColor:(selecioneOpcao = 'PIX' ? '#00f540' : '#fff'}),
-    borderWidth: 2,
-    borderColor: '#fff',
-    marginRight: 10,
-  },
-  optionText: {
-    color: '#fff',
-    fontSize: 12,
-  },
-  button: {
-    flexDirection: "row",
-    backgroundColor: 'black',
-    padding: 10,
-    borderRadius: 5,
-    borderWidth: 1,
-    borderColor: 'black',
-    width: "100%",
-    height: 50,
-  },
-  buttonText: {
-    paddingTop: 5,
-    textAlign: 'center',
-    color: '#fff',
-    fontSize: 16,
-
-  },
-});
